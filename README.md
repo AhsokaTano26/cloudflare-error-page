@@ -2,9 +2,7 @@
 
 ## What does this project do?
 
-This project creates customized error pages that mimics Cloudflare's error page. And you can embed it into your website.
-
-![Default error page](doc/default.png)
+This project creates customized error pages that mimics the well-known Cloudflare's error page. You can also embed it into your website.
 
 ## Quickstart
 
@@ -44,6 +42,8 @@ with open('error.html', 'w') as f:
 webbrowser.open('error.html')
 ```
 
+![Default error page](doc/default.png)
+
 ## More Examples
 
 ### Catastrophic infrastructure failure
@@ -80,6 +80,36 @@ params =  {
 ```
 
 ![Catastrophic infrastructure failure](doc/example.png)
+
+### Web server is working
+
+``` Python
+params = {
+    'title': 'Web server is working',
+    'error_code': 200,
+    "more_information": {
+        "hidden": True,
+    },
+    'browser_status': {
+        'status': 'ok',
+        'status_text': 'Seems Working',
+    },
+    'cloudflare_status': {
+        'status': 'ok',
+        'status_text': 'Often Working',
+    },
+    'host_status': {
+        'status': 'ok',
+        'location': 'example.com',
+        'status_text': 'Just Working',
+    },
+    'error_source': 'host',
+    'what_happened': '<p>This site is still working. And it looks great.</p>',
+    'what_can_i_do': '<p>Visit the site before it crashes someday.</p>',
+}
+```
+
+![Web server is working](doc/example2.png)
 
 ## Full Parameter Reference
 ``` JavaScript
