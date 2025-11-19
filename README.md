@@ -61,7 +61,7 @@ You can customize the text, error codes, and status indicators without modifying
 
 #### Example 4: Network Issue
 ```json
-{"title":"Unable to connect","error_code":522,"browser_status":{"status":"ok","status_text":"Working"},"cloudflare_status":{"status":"error","status_text":"Connection timeout","location":"Global Network"},"host_status":{"status":"error","status_text":"Unreachable","location":"Origin Server"},"error_source":"cloudflare","what_happened":"<p>Cloudflare is unable to establish a connection to the origin server.</p>"}
+{"title":"Unable to connect","error_code":522,"browser_status":{"status":"ok","status_text":"Working"},"cloudflare_status":{"status":"error","status_text":"Connection timeout","location":"Global Network"},"host_status":{"status":"error","status_text":"Unreachable"},"error_source":"cloudflare","what_happened":"<p>Cloudflare is unable to establish a connection to the origin server.</p>"}
 ```
 
 ### Full Configuration Reference
@@ -98,7 +98,7 @@ The app performs a deep merge, so you only need to provide the fields you want t
   "host_status": {
     "status": "ok",
     "status_text": "Working",
-    "location": "The Site",
+    "location": null, // Defaults to current hostname (e.g., "example.com")
     "name": "Host"
   },
   "error_source": "cloudflare", // "browser", "cloudflare", or "host"

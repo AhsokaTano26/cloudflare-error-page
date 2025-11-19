@@ -47,7 +47,7 @@ const ErrorPage = ({ params = {} }) => {
                         <div className="clearfix md:px-8">
                             {items.map((itemId) => {
                                 let icon = 'server';
-                                let defaultLocation = 'example.com';
+                                let defaultLocation = hostname || 'example.com';
                                 let defaultName = 'Host';
 
                                 if (itemId === 'browser') {
