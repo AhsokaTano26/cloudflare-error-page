@@ -1,176 +1,131 @@
-# Cloudflare Error Page Generator
+# Cloudflare Error Page (React Version)
 
-## What does this project do?
+A pixel-perfect, static React implementation of the classic Cloudflare error page.
 
-This project creates customized error pages that mimics the well-known Cloudflare's error page. You can also embed it into your website.
+With the help of **Gemini 3**, this fork adds a React application to the original project, making it incredibly easy to deploy directly to **Cloudflare Pages** 😈
 
-## Quickstart
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/oftx/cloudflare-error-page)
 
-Install cloudflare-error-page using pip
+---
 
-``` Bash
-pip install git+https://github.com/donlon/cloudflare-error-page.git
-```
+## 📸 Screenshots
 
-Then you can generate an error page based on parameters you like. (See [example.py](examples/example.py))
+### Desktop View
+![Desktop View](./doc/desktop-preview.png)
 
-``` Python
-import webbrowser
-from cloudflare_error_page import render as render_cf_error_page
+### Mobile View
+![Mobile View](./doc/mobile-preview.png)
 
-# This function renders an error page based on the input parameters
-error_page = render_cf_error_page({
-    # Browser status is ok
-    'browser_status': {
-        "status": 'ok',
-    },
-    # Cloudflare status is error
-    'cloudflare_status': {
-        "status": 'error',
-        "status_text": 'Not Working',
-    },
-    # Host status is also ok
-    'host_status': {
-        "status": 'ok',
-        "location": 'example.com',
-    },
-    # can be 'browser', 'cloudflare', or 'host'
-    'error_source': 'cloudflare',
+---
 
-    # Texts shown in the bottom of the page
-    'what_happened': '<p>There is an internal server error on Cloudflare\'s network.</p>',
-    'what_can_i_do': '<p>Please try again in a few minutes.</p>',
-})
+## 🚀 Deploy to Cloudflare Pages
 
-with open('error.html', 'w') as f:
-    f.write(error_page)
+You can deploy this project to Cloudflare Pages in just a few clicks.
 
-webbrowser.open('error.html')
-```
+1.  **Fork this repository** to your GitHub account.
+2.  Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/) and go to **Compute (Workers & Pages)** > **Pages**.
+3.  Click **Connect to Git** and select your forked repository.
+4.  Configure the build settings:
+    *   **Framework preset**: `React(Vite)`
+    *   **Build command**: `npm run build`
+    *   **Build output directory**: `dist`
+    *   **Root directory**: `react-app` (Important!)
+5.  Click **Save and Deploy**.
 
-![Default error page](doc/default.png)
+That's it! Your custom error page is now live.
 
-## More Examples
+---
 
-### Catastrophic infrastructure failure
+## ⚙️ Configuration (Zero Code)
 
-``` Python
-params =  {
-    'title': 'Catastrophic infrastructure failure',
-    'more_information': {
-        "text": "cloudflare.com",
-        "link": "https://youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-    'browser_status': {
-        'status': 'error',
-        'status_text': 'Out of Memory',
-    },
-    'cloudflare_status': {
-        'status': 'error',
-        'location': 'Everywhere',
-        'status_text': 'Not Working',
-    },
-    'host_status': {
-        'status': 'error',
-        'location': 'example.com',
-        'status_text': 'On Fire',
-    },
-    'error_source': 'cloudflare',
-    'what_happened': '<p>There is a catastrophic failure.</p>',
-    'what_can_i_do': '<p>Please try again in a few years.</p>',
-    'perf_sec_by': {
-        "text": "Cloudflare",
-        "link": "https://youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-}
-```
+You can customize the text, error codes, and status indicators without modifying the code. Just use **Environment Variables** in Cloudflare Pages.
 
-![Catastrophic infrastructure failure](doc/example.png)
+1.  Go to your Pages project **Settings** > **Environment variables**.
+2.  Add a new variable named `VITE_CONFIG_JSON`.
+3.  Set the value to a JSON string with your custom settings.
 
-### Web server is working
-
-``` Python
-params = {
-    'title': 'Web server is working',
-    'error_code': 200,
-    "more_information": {
-        "hidden": True,
-    },
-    'browser_status': {
-        'status': 'ok',
-        'status_text': 'Seems Working',
-    },
-    'cloudflare_status': {
-        'status': 'ok',
-        'status_text': 'Often Working',
-    },
-    'host_status': {
-        'status': 'ok',
-        'location': 'example.com',
-        'status_text': 'Just Working',
-    },
-    'error_source': 'host',
-    'what_happened': '<p>This site is still working. And it looks great.</p>',
-    'what_can_i_do': '<p>Visit the site before it crashes someday.</p>',
-}
-```
-
-![Web server is working](doc/example2.png)
-
-### Using Flask server
-
-See [flask_server.py](examples/flask_server.py)
-
-
-## Full Parameter Reference
-``` JavaScript
+### Example Configuration
+```json
 {
-    "html_title": "cloudflare.com | 500: Internal server error",
-    "title": "Internal server error",
-    "error_code": 999,
-    "time": "2025-11-18 12:34:56 UTC",  // if not set, current UTC time is shown
-
-    // Configuration for "Visit ... for more information" line
-    "more_information": {
-        "hidden": false,
-        "text": "cloudflare.com", 
-        "link": "https://youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-
-    // Configuration for the Browser/Cloudflare/Host status
-    "browser_status": {
-        "status": "ok", // "ok" or "error"
-        "location": "You",
-        "name": "Browser",
-        "status_text": "Working",
-        "status_text_color": "#9bca3e",
-    },
-    "cloudflare_status": {
-        "status": "error",
-        "location": "Cloud",
-        "name": "Cloudflare",
-        "status_text": "Not Working",
-        "status_text_color": "#bd2426",
-    },
-    "host_status": {
-        "status": "ok",
-        "location": "The Site",
-        "name": "Host",
-        "status_text": "Working",
-        "status_text_color": "#9bca3e",
-    },
-    "error_source": "host", // Position of the error indicator, can be "browser", "cloudflare", or "host"
-
-    "what_happened": "<p>There is an internal server error on Cloudflare's network.</p>",
-    "what_can_i_do": "<p>Please try again in a few minutes.</p>",
-
-    "ray_id": '0123456789abcdef',  // if not set, random hex string is shown
-    "client_ip": '1.1.1.1',
-
-    // Configuration for 'Performance & security by ...' in the footer
-    "perf_sec_by": {
-        "text": "Cloudflare",
-        "link": "https://youtube.com/watch?v=dQw4w9WgXcQ",
-    },
+  "title": "System Maintenance",
+  "error_code": 503,
+  "what_happened": "<p>We are currently performing scheduled maintenance.</p>",
+  "what_can_i_do": "<p>Please check back in 15 minutes.</p>",
+  "browser_status": { "status": "ok", "status_text": "Your Browser" },
+  "cloudflare_status": { "status": "ok", "status_text": "Cloudflare" },
+  "host_status": { "status": "error", "status_text": "Maintenance" }
 }
 ```
+
+### Full Configuration Options
+The app performs a deep merge, so you only need to provide the fields you want to override.
+
+```javascript
+{
+  "title": "Internal server error",
+  "error_code": 500,
+  "time": null, // Defaults to current UTC time
+  "ray_id": null, // Defaults to random hex
+  "client_ip": "127.0.0.1",
+  
+  "more_information": {
+    "hidden": false,
+    "text": "cloudflare.com",
+    "link": "https://www.cloudflare.com"
+  },
+
+  "browser_status": {
+    "status": "ok", // "ok" or "error"
+    "status_text": "Working",
+    "location": "You",
+    "name": "Browser"
+  },
+  "cloudflare_status": {
+    "status": "error",
+    "status_text": "Error",
+    "location": "London",
+    "name": "Cloudflare"
+  },
+  "host_status": {
+    "status": "ok",
+    "status_text": "Working",
+    "location": "The Site",
+    "name": "Host"
+  },
+  "error_source": "cloudflare", // "browser", "cloudflare", or "host"
+  
+  "what_happened": "<p>HTML content supported here.</p>",
+  "what_can_i_do": "<p>HTML content supported here.</p>",
+  
+  "perf_sec_by": {
+    "text": "Cloudflare",
+    "link": "https://www.cloudflare.com"
+  }
+}
+```
+
+---
+
+## 🛠 Local Development
+
+To run the project locally:
+
+```bash
+cd react-app
+npm install
+npm run dev
+```
+
+This includes a **floating demo controller** (hover at the top of the screen) to quickly preview different error states (500, 503, 200).
+
+---
+
+## ❤️ Credits & Acknowledgements
+
+*   **Original Project**: Thanks to the original author [donlon](https://github.com/donlon/cloudflare-error-page) for the Python/Jinja2 implementation and assets.
+*   **Gemini 3**: For the intelligent coding assistance, React migration, and pixel-perfect UI refinements.
+*   **Cloudflare**: For providing the **robust** infrastructure and design inspiration.
+
+---
+
+MIT License
